@@ -1,32 +1,29 @@
 # Q1:
 # a:
 import math
-from collections import deque
-
-def round(x):
-    return math.ceil(x*100)/100
+def round_up_2dp(x):
+    return math.ceil(x * 100) / 100
 repaid = 100
 interest = int(input("Enter the interest percentage: \n"))
 repayment = int(input("Enter the repayment percentage: \n"))
 debt = 100
 counter = 0
 while debt > 0:
-    counter = counter + 1
-    interest_charged = debt * (interest/100)
-    debt = debt + interest_charged
-    repaid = repaid + interest_charged
-    debt = round(debt)
-    repayment_charge = debt * (repayment/100)
-    repayment_charge = round(repayment_charge)
+    counter += 1
+    interest_charged = debt * (interest / 100)
+    debt += interest_charged
+    repaid += interest_charged
+    debt = round_up_2dp(debt)
+    repayment_charge = debt * (repayment / 100)
+    repayment_charge = round_up_2dp(repayment_charge)
     if repayment_charge > 50:
-        debt = debt - repayment_charge
-    else: 
+        debt -= repayment_charge
+    else:
         if debt < 50:
-            debt = debt - debt
-        else: 
-            debt = debt - 50
-    repaid = round(repaid)
-
+            debt = 0
+        else:
+            debt -= 50
+    repaid = round_up_2dp(repaid)
 print(repaid)
 print(counter)
 
