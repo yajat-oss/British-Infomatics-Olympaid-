@@ -133,3 +133,58 @@ while True:
             board = make_move(board, move)
             current = other_player(current)
         break
+
+#Q3:
+#setting up the input for the string
+string = input("Enter your string: \n")
+
+#seperating the characters from the string above into a list
+split_string = [char for char in string]
+
+#input for the amount of times rules should be carried out
+times = int(input("Enter the amount of times you want the rules to be performed on the string: \n"))
+
+#input for the position (limit) of they want their string scanned to
+position = int(input("Enter the position: \n"))
+
+#the limit the question gave us
+limit = 2**31
+
+for x in range(0, times):
+    new_string = []
+    y = len(split_string)
+
+    for a in range(0, y):
+        if split_string[a] == "A":
+            new_string.append("B")
+        elif split_string[a] == "B":
+            new_string.append("AB")
+        elif split_string[a] == "C":
+            new_string.append("CD")
+        elif split_string[a] == "D":
+            new_string.append("DC")
+        elif split_string[a] == "E":
+            new_string.append("EE")
+
+    split_string = list("".join(new_string))
+
+#setting up variables for counting:
+A = 0
+B = 0
+C = 0
+D = 0
+E = 0
+
+for f in range(0, min(position, len(split_string))):
+    if split_string[f] == "A":
+        A += 1
+    if split_string[f] == "B":
+        B += 1
+    if split_string[f] == "C":
+        C += 1
+    if split_string[f] == "D":
+        D += 1
+    if split_string[f] == "E":
+        E += 1
+
+print(A, B, C, D, E)
