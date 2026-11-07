@@ -43,3 +43,93 @@ if sum(cards) == 15:
     score += 1
 
 print("Total points:", score)
+
+#Q2:
+def get_moves(board, player):
+    moves = []
+    for i in range(9):
+        if board[i] == player:
+            if i == 0:
+                adjacent = [1, 2, 3, 4, 5, 6, 7, 8]
+            else:
+                left = (i - 2) % 8 + 1
+                right = i % 8 + 1
+                if board[left] == player and board[right] == player:
+                    continue
+                adjacent = [0, left, right]
+            for j in sorted(adjacent):
+                if board[j] == "E":
+                    moves.append((i, j))
+    return moves
+def make_move(board, move):
+    i, j = move
+    board = list(board)
+    board[j] = board[i]
+    board[i] = "E"
+    return "".join(board)
+def other_player(player):
+    if player == "O":
+        return "X"
+    else:
+        return "O"
+def choose_move(board, player):
+    opponent = other_player(player)
+    moves = get_moves(board, player)
+    for move in moves:
+        new_board = make_move(board, move)
+        if len(get_moves(new_board, opponent)) == 0:
+            return move
+    for move in moves:
+        new_board = make_move(board, move)
+        opponent_moves = get_moves(new_board, opponent)
+        dangerous = False
+        for opponent_move in opponent_moves:
+            next_board = make_move(new_board, opponent_move)
+            if len(get_moves(next_board, player)) == 0:
+                dangerous = True
+                break
+        if not dangerous:
+            return move
+    return moves[0]
+def winner(player):
+    if player == "O":
+        return "Player 2 wins"
+    else:
+        return "Player 1 wins"
+board = input().strip()
+current = "O"
+while True:
+    try:
+        command = input().strip()
+    except EOFError:
+        break
+    if command == "n":
+        moves = get_moves(board, current)
+        if len(moves) == 0:
+            print(board)
+            print(winner(current))
+            break
+        move = choose_move(board, current)
+        board = make_move(board, move)
+        current = other_player(current)
+        print(board)
+        if len(get_moves(board, current)) == 0:
+            print(winner(current))
+            break
+    elif command == "r":
+        seen = set()
+        while True:
+            state = (board, current)
+            if state in seen:
+                print("Draw")
+                break
+            seen.add(state)
+            moves = get_moves(board, current)
+            if len(moves) == 0:
+                print(board)
+                print(winner(current))
+                break
+            move = choose_move(board, current)
+            board = make_move(board, move)
+            current = other_player(current)
+        break
